@@ -163,7 +163,6 @@ public class FOArrayList<E> {
 	 * @TODO 判断是否需要扩充顺序表容量
 	 * @param currentSize 当前顺序表的大小
 	 */
-
 	private void ensureCapacity(int currentSize) {
 		if (currentSize == capacity) {
 			this.capacity = (this.capacity * 3) / 2 + 1;

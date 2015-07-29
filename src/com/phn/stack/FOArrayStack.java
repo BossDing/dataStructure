@@ -115,6 +115,7 @@ public class FOArrayStack<E> {
 	 * @return true空 or false不为空
 	 */
 	public boolean isEmpty(){
+		//或者用长度表示
 		if(this.top==-1){
 			return true;
 		}
