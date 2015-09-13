@@ -8,7 +8,7 @@ package com.phn.tree;
  */
 public class FOBinarySearchTree<E extends Comparable<E>> {
 	//二叉查找树的根结点
-	private FOBinaryTreeNode<E> root;
+	private FOBinarySearchTreeNode<E> root;
 
 	/**
 	 * TODO 无参构造函数，初始化二叉排序树
@@ -31,7 +31,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param node 树的根结点
 	 * @return true or false
 	 */
-	private boolean contains2(E e, FOBinaryTreeNode<E> node) {
+	private boolean contains2(E e, FOBinarySearchTreeNode<E> node) {
 		if (node == null)
 			return false;
 		else {
@@ -51,11 +51,11 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param e 输入元素
 	 * @return 该输入元素在树中的结点信息
 	 */
-	public FOBinaryTreeNode<E> search(E e) {
+	public FOBinarySearchTreeNode<E> search(E e) {
 		if (root == null) {
 			throw new RuntimeException("该树为空！");
 		}
-		FOBinaryTreeNode<E> tempNode = root;
+		FOBinarySearchTreeNode<E> tempNode = root;
 		while (tempNode != null) {
 			int result = e.compareTo(tempNode.getE());
 			if (result == 0) {
@@ -71,18 +71,18 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	}
 
 	/**
-	 * @TODO 二叉排序树插入元素
+	 * @TODO 二叉排序树插入元素(非递归方法)
 	 * @param e 需要插入的元素
 	 * @return true or false
 	 */
 	public boolean add(E e) {
 		if (root == null) {
-			root = new FOBinaryTreeNode<E>();
+			root = new FOBinarySearchTreeNode<E>();
 			root.setE(e);
 			return true;
 		}
-		FOBinaryTreeNode<E> tempInsertNode = root;
-		FOBinaryTreeNode<E> insertParentNode = new FOBinaryTreeNode<E>();
+		FOBinarySearchTreeNode<E> tempInsertNode = root;
+		FOBinarySearchTreeNode<E> insertParentNode = new FOBinarySearchTreeNode<E>();
 		int result = 0;
 		while (tempInsertNode != null) {
 			insertParentNode = tempInsertNode;
@@ -95,7 +95,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 				return true;
 			}
 		}
-		FOBinaryTreeNode<E> insertNode = new FOBinaryTreeNode<E>();
+		FOBinarySearchTreeNode<E> insertNode = new FOBinarySearchTreeNode<E>();
 		insertNode.setE(e);
 		insertNode.setParent(insertParentNode);
 		int cmpResult = e.compareTo(insertParentNode.getE());
@@ -106,6 +106,37 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 		}
 		return true;
 	}
+	/**
+	 * @TODO 二叉排序树插入元素(递归方法)
+	 * @param e 需要插入的元素
+	 * @return true or false
+	 */
+	public boolean insert(E e){
+		insert(root,e);
+		return true;
+	}
+	/**
+	 * @TODO 二叉排序树插入元素的实现(递归方法)
+	 * @param node 二叉排序树跟结点
+	 * @param e 需要插入的元素
+	 * @return true or false
+	 */
+	private FOBinarySearchTreeNode<E> insert(FOBinarySearchTreeNode<E> node , E e){
+		if (node == null) {
+			return new FOBinarySearchTreeNode<E>(e,null,null,null);
+		}
+		int cmpResult = e.compareTo(node.getE());
+		if (cmpResult > 0) {
+			node.setRightChild(insert(node.getRightChild(),e));
+			node.getRightChild().setParent(node);
+		} else if(cmpResult < 0){
+			node.setLeftChild(insert(node.getLeftChild(),e));
+			node.getLeftChild().setParent(node);
+		}else{
+			;
+		}
+		return node;
+	}
 
 	/**
 	 * @TODO 二叉排序树删除在数中的输入的元素e
@@ -113,17 +144,17 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @return true or false
 	 */
 	public boolean remove(E e) {
-		FOBinaryTreeNode<E> removeNode = this.search(e);
+		FOBinarySearchTreeNode<E> removeNode = this.search(e);
 		if (removeNode == null) {
 			return false;
 		}
-		FOBinaryTreeNode<E> preRemoveNode = this.findPreNode(removeNode);
+		FOBinarySearchTreeNode<E> preRemoveNode = this.findPreNode(removeNode);
 		if (preRemoveNode != null) {
 			removeByPreNode(removeNode, preRemoveNode);
 			return true;
 		}
 
-		FOBinaryTreeNode<E> nextRemoveNode = this.findNextNode(removeNode);
+		FOBinarySearchTreeNode<E> nextRemoveNode = this.findNextNode(removeNode);
 		if (nextRemoveNode != null) {
 			removeByNextNode(removeNode, nextRemoveNode);
 			return true;
@@ -142,8 +173,8 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param removeNode 将要删除的结点
 	 * @param preRemoveNode 将要删除的结点的前驱结点
 	 */
-	private void removeByPreNode(FOBinaryTreeNode<E> removeNode,
-			FOBinaryTreeNode<E> preRemoveNode) {
+	private void removeByPreNode(FOBinarySearchTreeNode<E> removeNode,
+			FOBinarySearchTreeNode<E> preRemoveNode) {
 		if (preRemoveNode.getLeftChild() != null) {
 			preRemoveNode.getLeftChild().setParent(preRemoveNode.getParent());
 			preRemoveNode.getParent().setRightChild(
@@ -173,8 +204,8 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param removeNode 将要删除的结点
 	 * @param nextRemoveNode 将要删除的结点的后继结点
 	 */
-	private void removeByNextNode(FOBinaryTreeNode<E> removeNode,
-			FOBinaryTreeNode<E> nextRemoveNode) {
+	private void removeByNextNode(FOBinarySearchTreeNode<E> removeNode,
+			FOBinarySearchTreeNode<E> nextRemoveNode) {
 		if (nextRemoveNode.getRightChild() != null) {
 			nextRemoveNode.getRightChild()
 					.setParent(nextRemoveNode.getParent());
@@ -205,16 +236,16 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param node 输入的结点
 	 * @return 输入结点的前驱结点
 	 */
-	public FOBinaryTreeNode<E> findPreNode(FOBinaryTreeNode<E> node) {
+	public FOBinarySearchTreeNode<E> findPreNode(FOBinarySearchTreeNode<E> node) {
 		if (node == null) {
 			throw new RuntimeException("传入结点为空！");
 		}
-		FOBinaryTreeNode<E> tempNode = node.getLeftChild();
+		FOBinarySearchTreeNode<E> tempNode = node.getLeftChild();
 		if (tempNode == null) {
 			// throw new RuntimeException("传入结点无前驱节点！");
 			return null;
 		}
-		FOBinaryTreeNode<E> preNode = tempNode;
+		FOBinarySearchTreeNode<E> preNode = tempNode;
 		tempNode = tempNode.getRightChild();
 		while (tempNode != null) {
 			preNode = tempNode;
@@ -228,16 +259,16 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param node 输入结点
 	 * @return 输入结点的后继结点
 	 */
-	public FOBinaryTreeNode<E> findNextNode(FOBinaryTreeNode<E> node) {
+	public FOBinarySearchTreeNode<E> findNextNode(FOBinarySearchTreeNode<E> node) {
 		if (node == null) {
 			throw new RuntimeException("传入结点为空！");
 		}
-		FOBinaryTreeNode<E> tempNode = node.getRightChild();
+		FOBinarySearchTreeNode<E> tempNode = node.getRightChild();
 		if (tempNode == null) {
 			// throw new RuntimeException("传入结点无后继节点！");
 			return null;
 		}
-		FOBinaryTreeNode<E> nextNode = tempNode;
+		FOBinarySearchTreeNode<E> nextNode = tempNode;
 		tempNode = tempNode.getLeftChild();
 		while (tempNode != null) {
 			nextNode = tempNode;
@@ -259,7 +290,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param node 输入二叉排序树的根结点 
 	 * @return 该输入二叉排序树的最大元素
 	 */
-	private E getMaxE(FOBinaryTreeNode<E> node) {
+	private E getMaxE(FOBinarySearchTreeNode<E> node) {
 		if(node ==null){
 			return null;
 		}
@@ -281,7 +312,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param node 输入二叉排序树的根结点 
 	 * @return 该输入二叉排序树的最小元素
 	 */
-	private E getMinE(FOBinaryTreeNode<E> node) {
+	private E getMinE(FOBinarySearchTreeNode<E> node) {
 		if(node ==null){
 			return null;
 		}
@@ -307,7 +338,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param sb 将二叉排序树中元素的遍历结果保存在sb中
 	 * @return 二叉排序树中元素的字符串形式
 	 */
-	private String preOrder(FOBinaryTreeNode<E> node, StringBuffer sb) {
+	private String preOrder(FOBinarySearchTreeNode<E> node, StringBuffer sb) {
 		if (node != null) {
 			sb.append(node + ", ");
 			preOrder(node.getLeftChild(), sb);
@@ -331,7 +362,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param sb 将二叉排序树中元素的遍历结果保存在sb中
 	 * @return 二叉排序树中元素的字符串形式
 	 */
-	private String inOrder(FOBinaryTreeNode<E> node, StringBuffer sb) {
+	private String inOrder(FOBinarySearchTreeNode<E> node, StringBuffer sb) {
 		if (node != null) {
 			inOrder(node.getLeftChild(), sb);
 			sb.append(node + ", ");
@@ -355,7 +386,7 @@ public class FOBinarySearchTree<E extends Comparable<E>> {
 	 * @param sb 将二叉排序树中元素的遍历结果保存在sb中
 	 * @return 二叉排序树中元素的字符串形式
 	 */
-	private String postOrder(FOBinaryTreeNode<E> node, StringBuffer sb) {
+	private String postOrder(FOBinarySearchTreeNode<E> node, StringBuffer sb) {
 		if (node != null) {
 			postOrder(node.getLeftChild(), sb);
 			postOrder(node.getRightChild(), sb);

@@ -51,6 +51,5 @@ public class FOKMP {
 		if (j >= T.length())
 			return i - T.length();
 		return -1;
-
 	}
 }

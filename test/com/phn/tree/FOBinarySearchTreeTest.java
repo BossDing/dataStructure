@@ -11,7 +11,8 @@ public class FOBinarySearchTreeTest {
 		FOBinarySearchTree<String> fobst = new FOBinarySearchTree<String>();
 		fobst.add("f");
 		fobst.add("e");
-		fobst.add("b");
+		System.out.println(fobst.insert("b"));
+		System.out.println(fobst.add("b"));
 		fobst.add("a");
 		fobst.add("d");
 		fobst.add("c");
