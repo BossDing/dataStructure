@@ -29,6 +29,5 @@ public class ShellSort {
 
 		} while (d != 1);
 		return a;
-
 	}
 }
